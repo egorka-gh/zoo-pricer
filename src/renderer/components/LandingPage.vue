@@ -2,14 +2,9 @@
   <div id="wrapper">
     <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
     <main>
-      <div class="left-side">
-        <span class="title">
-          Welcome to your new project!
-        </span>
-        <system-information></system-information>
-      </div>
 
       <div class="right-side">
+        <ads></ads>
         <div class="doc">
           <div class="title">Getting Started</div>
           <p>
@@ -30,11 +25,12 @@
 </template>
 
 <script>
-  import SystemInformation from './LandingPage/SystemInformation'
+  // import SystemInformation from './LandingPage/SystemInformation'
+  import Ads from './LandingPage/Ads'
 
   export default {
     name: 'landing-page',
-    components: { SystemInformation },
+    components: { Ads },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)
@@ -43,7 +39,7 @@
   }
 </script>
 
-<style>
+<style >
   @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
   * {
