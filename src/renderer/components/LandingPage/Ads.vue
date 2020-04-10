@@ -1,11 +1,11 @@
 <template>
   <div>
     <h1>sdwdw {{ counter }}</h1>
-    <carousel :autoplay="true" :nav="false" :items="2" :loop="true">    
+    <carousel :autoplay="true" :nav="false" :dots="false" :items="2" :loop="true" >    
       <img 
             v-for="item in ads"
             :key="item.name"
-      v-bind:src="item.path" alt="item.name"
+      v-bind:src="item.path" :alt="item.name"
       />
     </carousel>
     <a @click="handleClick">Click me!</a>

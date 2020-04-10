@@ -19,8 +19,9 @@ const mutations = {
         state.version = ver.version;
         const newData = [];
         const path = require('path');
+        const folder = path.join(state.folder, ver.version)
         ver.files.forEach(element => {
-            newData.push({ name: element, path: "file://" + path.join(ver.folder, element) });
+            newData.push({ name: element, path: "file://" + path.join(folder, element) });
         });
 
         state.items = newData;
@@ -43,12 +44,7 @@ const actions = {
                 console.log(err);
                 return;
             }
-            /*
-            files.forEach(element => {
-                newData.push({ name: element, path: path.join(folder, element) });
-            });
-            */
-            commit('newVersion', { version: newVersion, folder: folder, files: files });
+            commit('newVersion', { version: newVersion, files: files });
         });
 
     }

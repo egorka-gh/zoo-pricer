@@ -68,13 +68,7 @@
     width: 420px;
   }
 
-  main {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  main > div { flex-basis: 50%; }
-
+  
   .left-side {
     display: flex;
     flex-direction: column;
