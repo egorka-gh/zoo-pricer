@@ -28,11 +28,8 @@ export default {
   },
   methods: {
     handleClick: function() {
-      alert('test');
-      //this.$store.commit('incRoot');
+      this.$router.replace('config');
       this.$store.dispatch('checkout', null, {root: true});
-      //this.$store.dispatch('sync', '01');
-      //this.$store.dispatch('someAsyncTask', null, {root: true});
     }
   }
 }

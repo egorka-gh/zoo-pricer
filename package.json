@@ -57,6 +57,7 @@
     "basic-ftp": "^4.5.4",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
+    "vue-form-generator": "^2.3.4",
     "vue-owl-carousel": "^2.0.3",
     "vue-router": "^3.0.1",
     "vue-slick-carousel": "^1.0.5",
