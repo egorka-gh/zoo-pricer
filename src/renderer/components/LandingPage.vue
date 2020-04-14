@@ -2,7 +2,7 @@
   <div id="wrapper">
     <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
     <main>
-
+      <PriceList></PriceList>
       <div class="right-side">
         <ads></ads>
         <div class="doc">
@@ -27,10 +27,11 @@
 <script>
   // import SystemInformation from './LandingPage/SystemInformation'
   import Ads from './LandingPage/Ads'
+  import PriceList from './LandingPage/PriceList'
 
   export default {
     name: 'landing-page',
-    components: { Ads },
+    components: { Ads, PriceList },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)

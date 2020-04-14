@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "basic-ftp": "^4.5.4",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-owl-carousel": "^2.0.3",

@@ -6,9 +6,9 @@ const state = {
     folder: 'C:\\buff\\ads',
     version: '0000-00-00',
     items: [
-        { path: '001' },
-        { path: '002' },
-        { path: '003' }
+        { name: '001', path: '001' },
+        { name: '002', path: '002' },
+        { name: '003', path: '003' }
     ]
 }
 
