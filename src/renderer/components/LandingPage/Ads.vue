@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>sdwdw {{ counter }}</h1>
-    <carousel :autoplay="true" :nav="false" :dots="false" :items="2" :loop="true" >    
+    <h1>hz {{ counter }}, counter {{ counter2 }}</h1>
+    <carousel v-if="showAds" :autoplay="true" :nav="false" :dots="false" :items="2" :loop="true" >    
       <img 
             v-for="item in ads"
             :key="item.name"
@@ -9,6 +9,7 @@
       />
     </carousel>
     <a @click="handleClick">Click me!</a>
+    <a @click="handleSync">handleSync!</a>
   </div>
 </template>
 
@@ -22,6 +23,12 @@ export default {
     counter () {
       return this.$store.state.main
     },
+    counter2 () {
+      return this.$store.state.Counter.main
+    },
+    showAds(){
+      return !this.$store.state.Ad.hide;
+    },
     ads () {
       return this.$store.state.Ad.items
     }
@@ -30,6 +37,9 @@ export default {
     handleClick: function() {
       this.$router.replace('config');
       this.$store.dispatch('checkout', null, {root: true});
+    },
+    handleSync: function() {
+      this.$store.dispatch('sync', '01');
     }
   }
 }

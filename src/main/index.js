@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
+import store from '../renderer/store'
 
 /**
  * Set `__static` path to static files in production
@@ -20,9 +22,9 @@ function createWindow() {
      * Initial window options
      */
     mainWindow = new BrowserWindow({
-        height: 563,
+        height: 900,
         useContentSize: true,
-        width: 1000,
+        width: 1800,
         webPreferences: {
             webSecurity: false
         }
@@ -33,6 +35,21 @@ function createWindow() {
     mainWindow.on('closed', () => {
         mainWindow = null
     })
+
+    setInterval(() => store.dispatch('someAsyncTask'), 2000);
+    setInterval(() => runSync(), 10000);
+}
+
+let currSync = '01'
+
+function runSync() {
+    if (currSync == '01') {
+        currSync = '02'
+    } else {
+        currSync = '01'
+    }
+    // console.log('currSync ', currSync);
+    store.dispatch('sync', currSync);
 }
 
 app.on('ready', createWindow)

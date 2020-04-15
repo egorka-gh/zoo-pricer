@@ -5,26 +5,26 @@
 const state = {
     folder: 'C:\\buff\\ads',
     version: '0000-00-00',
-    items: [
-        { name: '001', path: '001' },
-        { name: '002', path: '002' },
-        { name: '003', path: '003' }
-    ]
+    hide: true,
+    items: []
 }
 
 const mutations = {
     newVersion(state, ver) {
-        console.log('newVersion ');
-        console.log(ver);
+        console.log('newVersion ', ver);
         state.version = ver.version;
-        const newData = [];
+        //const newData = [];
         const path = require('path');
         const folder = path.join(state.folder, ver.version)
+        state.items.length = 0;
         ver.files.forEach(element => {
-            newData.push({ name: element, path: "file://" + path.join(folder, element) });
+            state.items.push({ name: element, path: "file://" + path.join(folder, element) });
         });
-
-        state.items = newData;
+        state.hide = false;
+        //state.items = newData;
+    },
+    hidden(state, value) {
+        state.hide = value;
     }
 }
 
@@ -34,6 +34,7 @@ const actions = {
             // max version (currentdate)
             const maxVer = new Date().toISOString().split('T')[0]
             */
+        commit('hidden', true);
         console.log('sync ' + newVersion);
         if (!newVersion) return;
         const path = require('path');

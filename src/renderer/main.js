@@ -18,6 +18,6 @@ new Vue({
     mounted: function() {
         // eslint-disable-next-line no-console
         console.log('app mounted');
-        this.$store.dispatch('sync', '01');
+        //     this.$store.dispatch('sync', '01');
     }
 }).$mount('#app')
