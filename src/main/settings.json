@@ -1,0 +1,22 @@
+{
+    "app": {
+        "id": "",
+        "folder": ""
+    },
+    "ads": {
+        "interval": 30,
+        "items": 2,
+        "height": 300
+    },
+    "ftp": {
+        "host": "",
+        "user": "",
+        "pass": "",
+        "folder": "/",
+        "interval": 20
+    },
+    "sync":{
+        "ads": "",
+        "price": ""
+    }
+}

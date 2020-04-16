@@ -44,14 +44,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.posts {
-  list-style: none;
-  text-align: left;
-}
-
-.post-item + .post-item {
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
-</style>

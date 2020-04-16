@@ -1,8 +1,10 @@
-/* eslint-disable no-console */
 'use strict'
 
 import { app, BrowserWindow } from 'electron'
-import store from '../renderer/store'
+import defaults from './settings.json'
+import store from '../renderer/store';
+const settings = require('electron-settings');
+const log = require('electron-log');
 
 /**
  * Set `__static` path to static files in production
@@ -36,23 +38,11 @@ function createWindow() {
         mainWindow = null
     })
 
-    setInterval(() => store.dispatch('someAsyncTask'), 2000);
-    setInterval(() => runSync(), 10000);
 }
 
-let currSync = '01'
-
-function runSync() {
-    if (currSync == '01') {
-        currSync = '02'
-    } else {
-        currSync = '01'
-    }
-    // console.log('currSync ', currSync);
-    store.dispatch('sync', currSync);
-}
 
 app.on('ready', createWindow)
+app.on('ready', initApp)
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -65,6 +55,45 @@ app.on('activate', () => {
         createWindow()
     }
 })
+
+function initApp() {
+    //check if config is valid
+    if (!settings.has('app.id')) {
+        //first run
+        log.info('Create default settings')
+        settings.setAll(defaults)
+        settings.set('app.folder', app.getPath('userData'))
+    }
+    applyConfig();
+    // setInterval(() => store.dispatch('someAsyncTask'), 2000);
+    // setInterval(() => runSync(), 10000);
+}
+
+settings.watch('app.id', () => {
+    settings.set('sync.ads', '');
+    settings.set('sync.price', '');
+    applyConfig();
+});
+
+function applyConfig() {
+    store.dispatch('applyConfig', settings.getAll());
+    //if (!settings.get('app.folder') || !settings.get('app.id'))  return;
+    // setInterval(() => runSync(), 10000)
+}
+
+/*
+let currSync = '01'
+
+function runSync() {
+    if (currSync == '01') {
+        currSync = '02'
+    } else {
+        currSync = '01'
+    }
+    // console.log('currSync ', currSync);
+    store.dispatch('sync', currSync);
+}
+*/
 
 /**
  * Auto Updater
