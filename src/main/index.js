@@ -2,9 +2,12 @@
 
 import { app, BrowserWindow } from 'electron'
 import defaults from './settings.json'
-import store from '../renderer/store';
+import store from '../renderer/store'
+import FtpHelper from './ftp-helper'
+
 const settings = require('electron-settings');
 const log = require('electron-log');
+const path = require("path");
 
 /**
  * Set `__static` path to static files in production
@@ -65,6 +68,7 @@ function initApp() {
         settings.set('app.folder', app.getPath('userData'))
     }
     applyConfig();
+    runSync();
     // setInterval(() => store.dispatch('someAsyncTask'), 2000);
     // setInterval(() => runSync(), 10000);
 }
@@ -80,6 +84,52 @@ function applyConfig() {
     //if (!settings.get('app.folder') || !settings.get('app.id'))  return;
     // setInterval(() => runSync(), 10000)
 }
+
+
+function runSync() {
+    //resync interval
+    let interval = settings.get('ftp.interval')
+    if (!interval || interval < 20) interval = 20;
+    interval = process.env.NODE_ENV === 'development' ?
+        interval * 1000 :
+        interval * 60 * 1000;
+    //check settings
+    if (!settings.get('app.folder') || !settings.get('app.id') || !settings.get('ftp.host')) {
+        //shedule
+        setInterval(() => runSync(), interval);
+        return;
+    }
+    //check app.folder
+    var fs = require('fs');
+    if (!fs.existsSync(settings.get('app.folder'))) {
+        //shedule
+        setInterval(() => runSync(), interval);
+        return;
+    }
+    const localFolder = path.join(settings.get('app.folder'), settings.get('app.id'));
+    const versions = { price: settings.get('sync.price'), ads: settings.get('sync.ads') };
+    const ftpFolder = settings.get('ftp.folder') + '/' + settings.get('app.id');
+    try {
+        if (!fs.existsSync(localFolder)) fs.mkdirSync(localFolder);
+
+        new FtpHelper(settings.get('ftp.host'), settings.get('ftp.user'), settings.get('ftp.pass'))
+            .sync(versions, localFolder, ftpFolder)
+            .then(r => {
+                log.info('sync result:', r);
+                if (r) {
+                    if (r.ads) settings.set('sync.ads', r.ads)
+                    if (r.price) settings.set('sync.price', r.price)
+                    store.dispatch('sync', r);
+                }
+            });
+    } catch (error) {
+        log.error(error);
+    }
+    //shedule
+    setInterval(() => runSync(), interval);
+}
+
+
 
 /*
 let currSync = '01'

@@ -12,20 +12,19 @@ const state = {
 }
 
 const mutations = {
-    newVersion(state, ver) {
+    newVersionAd(state, ver) {
         log.info('newVersion ', ver);
         state.version = ver.version;
-        const folder = path.join(state.folder, ver.version)
         state.items.length = 0;
         ver.files.forEach(element => {
-            state.items.push({ name: element, path: "file://" + path.join(folder, element) });
+            state.items.push({ name: element, path: "file://" + path.join(state.folder, ver.version, element) });
         });
         state.hide = false;
     },
-    hidden(state, value) {
+    hiddenAd(state, value) {
         state.hide = value;
     },
-    newConfig(state, config) {
+    newConfigAd(state, config) {
         state.hide = true;
         state.folder = config.folder;
         state.version = config.version;
@@ -35,32 +34,27 @@ const mutations = {
 const actions = {
     applyConfig({ dispatch, commit }, config) {
         log.info('Ad.applyConfig ', config);
-        commit('Ad.newConfig', {
+        commit('newConfigAd', {
             "folder": path.join(config.app.folder, config.app.id, 'ads'),
             "version": config.sync.ads
         });
         if (!config.app.folder || !config.app.id || !config.sync.ads) return;
         dispatch('syncAds', config.sync.ads);
     },
-    syncAds({ commit, state }, newVersion) {
-        /*
-            // max version (currentdate)
-            const maxVer = new Date().toISOString().split('T')[0]
-            */
-        log.info('syncAds ', newVersion);
-        commit('hidden', true);
-        if (!newVersion) return;
+    sync({ commit, state }, versions) {
+        log.info('Ad.sync ', versions);
+        commit('hiddenAd', true);
+        if (!versions || !versions.ads) return;
         const path = require('path');
-        const folder = path.join(state.folder, newVersion)
+        const folder = path.join(state.folder, versions.ads)
         const fs = require('fs');
         fs.readdir(folder, (err, files) => {
             if (err) {
                 log.error(err);
                 return;
             }
-            commit('newVersion', { version: newVersion, files: files });
+            commit('newVersionAd', { version: versions.ads, files: files });
         });
-
     }
 }
 
