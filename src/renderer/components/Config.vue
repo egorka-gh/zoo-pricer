@@ -144,7 +144,15 @@ export default {
                 label: "",
                 buttonText: "Сохранить",
                 validateBeforeSubmit: true,
-                onSubmit: this.onForm
+                onSubmit: this.onForm,
+                buttons:[
+                  {
+                    label: 'Отмена',
+                    onclick: function(){
+                      this.$router.replace('home');
+                    }
+                  }
+                ]
               }
             ]
           }
