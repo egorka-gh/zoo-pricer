@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>hz {{ counter }}, counter {{ counter2 }}</h1>
+    <h1>hz {{ counter }}, counter {{ counter2 }}, showAds {{showAds}}</h1>
     <carousel v-if="showAds" :autoplay="true" :nav="false" :dots="false" :items="2" :loop="true" >    
       <img 
             v-for="item in ads"

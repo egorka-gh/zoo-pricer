@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import defaults from './settings.json'
 import store from '../renderer/store'
 import FtpHelper from './ftp-helper'
@@ -45,7 +45,6 @@ function createWindow() {
 
 
 app.on('ready', createWindow)
-app.on('ready', initApp)
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -59,6 +58,11 @@ app.on('activate', () => {
     }
 })
 
+ipcMain.on('initApp', (event) => {
+    initApp();
+    event.sender.send('initApp-reply', settings.get('app.id'));
+})
+
 function initApp() {
     //check if config is valid
     if (!settings.has('app.id')) {
@@ -69,8 +73,6 @@ function initApp() {
     }
     applyConfig();
     runSync();
-    // setInterval(() => store.dispatch('someAsyncTask'), 2000);
-    // setInterval(() => runSync(), 10000);
 }
 
 settings.watch('app.id', () => {
@@ -80,9 +82,12 @@ settings.watch('app.id', () => {
 });
 
 function applyConfig() {
-    store.dispatch('applyConfig', settings.getAll());
-    //if (!settings.get('app.folder') || !settings.get('app.id'))  return;
-    // setInterval(() => runSync(), 10000)
+    try {
+        store.dispatch('applyConfig', settings.getAll())
+            .then(store.dispatch('sync', settings.get('sync')));
+    } catch (error) {
+        log.error(error);
+    }
 }
 
 
@@ -96,14 +101,14 @@ function runSync() {
     //check settings
     if (!settings.get('app.folder') || !settings.get('app.id') || !settings.get('ftp.host')) {
         //shedule
-        setInterval(() => runSync(), interval);
+        setTimeout(() => runSync(), interval);
         return;
     }
     //check app.folder
     var fs = require('fs');
     if (!fs.existsSync(settings.get('app.folder'))) {
         //shedule
-        setInterval(() => runSync(), interval);
+        setTimeout(() => runSync(), interval);
         return;
     }
     const localFolder = path.join(settings.get('app.folder'), settings.get('app.id'));
@@ -126,24 +131,9 @@ function runSync() {
         log.error(error);
     }
     //shedule
-    setInterval(() => runSync(), interval);
+    setTimeout(() => runSync(), interval);
 }
 
-
-
-/*
-let currSync = '01'
-
-function runSync() {
-    if (currSync == '01') {
-        currSync = '02'
-    } else {
-        currSync = '01'
-    }
-    // console.log('currSync ', currSync);
-    store.dispatch('sync', currSync);
-}
-*/
 
 /**
  * Auto Updater
