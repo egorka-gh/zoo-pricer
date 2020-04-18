@@ -55,6 +55,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "basic-ftp": "^4.5.4",
+    "csv-parse": "^4.8.8",
     "electron-log": "^4.1.1",
     "electron-settings": "^3.2.0",
     "vue": "^2.5.16",
