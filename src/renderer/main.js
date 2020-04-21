@@ -8,6 +8,7 @@ import store from './store'
 const log = require('electron-log');
 const electron = require('electron')
 const ipc = electron.ipcRenderer
+const Mousetrap = require('mousetrap');
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
@@ -36,3 +37,12 @@ ipc.on('initApp-reply', (event, newid) => {
         router.replace('config');
     }
 })
+
+// shortcut to config
+Mousetrap.bind(['command+c', 'ctrl+c'], function() {
+    router.replace('config');
+
+    // return false to prevent default browser behavior
+    // and stop event from bubbling
+    return false;
+});

@@ -1,6 +1,7 @@
 <template>
   <div id="wrapper">
     <main>
+      <button class="focus-holder"></button>
       <PriceList></PriceList>
       <Ads></Ads>
     </main>
@@ -38,6 +39,11 @@
       );
     height: 100vh;
     width: 100vw;
+  }
+
+  .focus-holder{
+    position: absolute;
+    color: transparent;
   }
 
 

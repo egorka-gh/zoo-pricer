@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron'
 import defaults from './settings.json'
 import store from '../renderer/store'
 import FtpHelper from './ftp-helper'
@@ -50,6 +50,29 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit()
     }
+})
+
+app.on('ready', () => {
+    // Register a 'CommandOrControl+X' shortcut listener.
+    const ret = globalShortcut.register('CommandOrControl+X', () => {
+        log.info('CommandOrControl+X is pressed. Closing app');
+        app.quit()
+    })
+
+    if (!ret) {
+        log.info('registration failed')
+    }
+
+    // Check whether a shortcut is registered.
+    log.info(globalShortcut.isRegistered('CommandOrControl+X'))
+})
+
+app.on('will-quit', () => {
+    // Unregister a shortcut.
+    globalShortcut.unregister('CommandOrControl+X')
+
+    // Unregister all shortcuts.
+    globalShortcut.unregisterAll()
 })
 
 app.on('activate', () => {
