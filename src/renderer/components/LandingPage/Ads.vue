@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <h1>hz {{ counter }}, counter {{ counter2 }}, showAds {{showAds}}</h1>
+  <div :style="cssVars">
     <carousel v-if="showAds" :autoplay="true" :nav="false" :dots="false" :items="2" :loop="true" >    
       <img 
             v-for="item in ads"
@@ -8,8 +7,6 @@
       v-bind:src="item.path" :alt="item.name"
       />
     </carousel>
-    <a @click="handleClick">Click me!</a>
-    <a @click="handleSync">handleSync!</a>
   </div>
 </template>
 
@@ -20,17 +17,16 @@ import carousel from 'vue-owl-carousel'
 export default {
   components: { carousel },
   computed: {
-    counter () {
-      return this.$store.state.main
-    },
-    counter2 () {
-      return this.$store.state.Counter.main
-    },
     showAds(){
       return !this.$store.state.Ad.hide;
     },
     ads () {
-      return this.$store.state.Ad.items
+      return this.$store.state.Ad.items;
+    },
+    cssVars() {
+      return {
+        '--height': this.$store.state.Ad.height + 'px'
+      };
     }
   },
   methods: {
@@ -44,3 +40,20 @@ export default {
   }
 }
 </script>
+
+<style >
+
+.owl-item {
+  height: var(--height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.owl-item img{
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+</style>

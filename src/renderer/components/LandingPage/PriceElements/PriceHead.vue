@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <span>{{ price.group }}</span>
     <span>|</span>
     <span>{{ price.group_comment }}</span>

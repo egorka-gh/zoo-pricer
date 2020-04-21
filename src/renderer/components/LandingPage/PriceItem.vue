@@ -1,15 +1,14 @@
 <template>
-  <div>
-    <PriceHead 
+  <div class="page-item">
+    <PriceHead  v-if="price.show_group"
             :price="price"      
       />
-    <Brand 
+    <Brand v-if="price.show_brand"
             :price="price"      
       />
     <Price 
             :price="price"      
       />
-
   </div>
 </template>
 

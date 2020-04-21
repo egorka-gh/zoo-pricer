@@ -55,6 +55,8 @@ const actions = {
                 rec.id = i;
                 rec.show_group = rec.group_id != group;
                 rec.show_brand = rec.brand != brand;
+                group = rec.group_id;
+                brand = rec.brand;
             });
             commit('newVersionPr', { version: versions.price, items: records });
         } catch (error) {

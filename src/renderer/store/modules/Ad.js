@@ -8,6 +8,7 @@ const state = {
     folder: '',
     version: '',
     hide: true,
+    height: 100,
     items: []
 }
 
@@ -30,7 +31,8 @@ const mutations = {
         state.hide = true;
         state.folder = config.folder;
         state.version = config.version;
-        log.info('newConfigAd ', state.folder, state.version);
+        state.height = config.height;
+        // log.info('newConfigAd ', state.folder, state.version);
     }
 }
 
@@ -41,11 +43,12 @@ const actions = {
         if (!config.app.folder || !config.app.id) newFolder = '';
         commit('newConfigAd', {
             "folder": newFolder,
-            "version": config.sync.ads
+            "version": config.sync.ads,
+            "height": config.ads.height
         });
     },
     sync({ commit, state }, versions) {
-        log.info('Ad.sync ', versions, ', hide:', state.hide);
+        // log.info('Ad.sync ', versions, ', hide:', state.hide);
         if (!versions || !versions.ads) return;
         commit('hiddenAd', true);
         if (!state.folder) return;
