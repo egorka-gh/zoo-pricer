@@ -30,6 +30,8 @@ function createWindow() {
         height: 900,
         useContentSize: true,
         width: 1800,
+        frame: false,
+        fullscreen: true,
         webPreferences: {
             webSecurity: false
         }

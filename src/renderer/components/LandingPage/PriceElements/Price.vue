@@ -1,10 +1,14 @@
 <template>
-  <div>
-    <span>{{ price.adv }}</span>
-    <span>|</span>
-    <span>{{ price.name }}</span>
-    <span>|</span>
-    <span>{{ price.price }}</span>
+  <div class="price-item">
+    <div class="price-item-action">
+      <span>{{ price.adv }}</span>
+    </div>
+    <div class="price-item-name">
+      <p>{{ price.name }}</p>
+    </div>
+    <div class="price-item-price">
+      <span>{{ price.price }}</span>
+    </div>
   </div>
 </template>
 
