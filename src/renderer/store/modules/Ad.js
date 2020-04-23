@@ -9,6 +9,8 @@ const state = {
     version: '',
     hide: true,
     height: 100,
+    interval: 5000,
+    showItems: 2,
     items: []
 }
 
@@ -32,6 +34,8 @@ const mutations = {
         state.folder = config.folder;
         state.version = config.version;
         state.height = config.height;
+        state.interval = config.interval;
+        state.showItems = config.items;
         // log.info('newConfigAd ', state.folder, state.version);
     }
 }
@@ -44,7 +48,9 @@ const actions = {
         commit('newConfigAd', {
             "folder": newFolder,
             "version": config.sync.ads,
-            "height": config.ads.height
+            "height": config.ads.height,
+            "interval": (config.ads.interval && config.ads.interval > 5) ? config.ads.interval * 1000 : 5000,
+            "items": (config.ads.items && config.ads.items > 2) ? config.ads.items : 2
         });
     },
     sync({ commit, state }, versions) {

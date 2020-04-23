@@ -1,6 +1,15 @@
 <template>
-  <div :style="cssVars">
-    <carousel v-if="showAds" :autoplay="true" :nav="false" :dots="false" :items="2" :loop="true">
+  <div :style="cssVars" class="owl-wrapper">
+    <carousel
+      v-if="showAds"
+      :autoplay="true"
+      :nav="false"
+      :dots="false"
+      :loop="true"
+      :margin="5"
+      :autoplayTimeout="autoplayInterval"
+      :items="showItems"
+    >
       <img v-for="item in ads" :key="item.name" v-bind:src="item.path" :alt="item.name" />
     </carousel>
   </div>
@@ -23,6 +32,12 @@ export default {
       return {
         '--height': this.$store.state.Ad.height + 'px'
       };
+    },
+    autoplayInterval(){
+      return this.$store.state.Ad.interval;
+    },
+    showItems(){
+      return this.$store.state.Ad.showItems;
     }
   },
   methods: {
@@ -38,6 +53,9 @@ export default {
 </script>
 
 <style >
+.owl-wrapper {
+  margin: 0 5px;
+}
 .owl-item {
   height: var(--height);
   display: flex;
