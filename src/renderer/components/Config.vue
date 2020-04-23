@@ -1,7 +1,8 @@
 <template>
   <div class="panel-body">
     <h2>Настройки</h2>
-        <vue-form-generator :schema="schema" :model="model" :options="formOptions"></vue-form-generator>
+    <vue-form-generator :schema="schema" :model="model" :options="formOptions"></vue-form-generator>
+    <div>Версии данных {{lastSync}}</div>
   </div>
 </template>
 
@@ -27,13 +28,11 @@ export default {
   components: {
 		"vue-form-generator": VueFormGenerator.component
   }, 
-  /*
   computed: {
-    model () {
-      return settings.getAll();
+    lastSync () {
+      return 'Цены: '+settings.get('sync.price')+'; Реклама: '+settings.get('sync.ads');
     }
   },
-  */
   data () {
     return {
       model: settings.getAll(),
@@ -172,17 +171,17 @@ export default {
 .panel-body {
   margin: 1vw 1vw 1vw 2vw;
 }
-.form-group{
+.form-group {
   margin-left: 1vw;
   display: block;
 }
 .form-group:not([class*=" col-"]) {
-    width: 600px;
+  width: 600px;
 }
 fieldset {
-    border-style: none;
+  border-style: none;
 }
-legend{
+legend {
   font-weight: 800;
 }
 </style>

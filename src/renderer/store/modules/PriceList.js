@@ -51,12 +51,17 @@ const actions = {
             });
             let group = "";
             let brand = "";
-            records.forEach((rec, i) => {
+            records.forEach((rec, i, arr) => {
                 rec.id = i;
                 rec.show_group = rec.group_id != group;
                 rec.show_brand = rec.brand != brand;
                 group = rec.group_id;
                 brand = rec.brand;
+                //offset before group or brand
+                rec.show_gap = false;
+                if (i > 0) {
+                    arr[i - 1].show_gap = rec.show_group || rec.show_brand;
+                }
             });
             commit('newVersionPr', { version: versions.price, items: records });
         } catch (error) {

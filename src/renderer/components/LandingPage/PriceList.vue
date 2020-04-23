@@ -90,6 +90,12 @@ export default {
   transform: translateY(-50%);
 }
 
+.price-item-gap {
+  grid-column: price;
+  grid-row: 2;
+  height: 20px;
+}
+
 .price-item-price {
   grid-column: price;
   grid-row: 1;

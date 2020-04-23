@@ -9,6 +9,7 @@
     <div class="price-item-price">
       <span>{{ price.price }}</span>
     </div>
+    <div class="price-item-gap" v-if="price.show_gap" />
   </div>
 </template>
 
