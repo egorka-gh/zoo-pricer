@@ -33,7 +33,7 @@ export default {
 .pages-holder {
   overflow: hidden;
   height: calc(100vh - var(--height));
-  padding: 20px 0 20px 20px;
+  padding: 20px 0 10px 20px;
   margin: 0;
 }
 .pages-decorator {

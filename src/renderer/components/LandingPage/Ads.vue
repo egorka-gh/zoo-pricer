@@ -1,11 +1,7 @@
 <template>
   <div :style="cssVars">
-    <carousel v-if="showAds" :autoplay="true" :nav="false" :dots="false" :items="2" :loop="true" >    
-      <img 
-            v-for="item in ads"
-            :key="item.name"
-      v-bind:src="item.path" :alt="item.name"
-      />
+    <carousel v-if="showAds" :autoplay="true" :nav="false" :dots="false" :items="2" :loop="true">
+      <img v-for="item in ads" :key="item.name" v-bind:src="item.path" :alt="item.name" />
     </carousel>
   </div>
 </template>
@@ -42,18 +38,17 @@ export default {
 </script>
 
 <style >
-
 .owl-item {
   height: var(--height);
   display: flex;
+  padding: 0 0 10px 0;
   justify-content: center;
   align-items: center;
 }
-.owl-item img{
+.owl-item img {
   max-width: 100%;
   max-height: 100%;
   display: block;
   object-fit: contain;
 }
-
 </style>
