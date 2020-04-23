@@ -22,6 +22,14 @@ export default {
   methods:{
       onForm: function() {
         settings.setAll(this.model);
+        //apply config
+        try {
+          this.$store.dispatch('applyConfig', settings.getAll())
+            //TODO must be .then(this.$store.dispatch('sync', settings.get('sync')));
+            this.$store.dispatch('sync', settings.get('sync'))
+        } catch (error) {
+            log.error(error);
+        }
         this.$router.replace('home');
       }
   }, 
