@@ -21,6 +21,8 @@ export default {
   },
   methods:{
       onForm: function() {
+        this.$emit('new-config',this.model);
+        /*
         settings.setAll(this.model);
         //apply config
         try {
@@ -31,6 +33,7 @@ export default {
             log.error(error);
         }
         this.$router.replace('home');
+        */
       }
   }, 
   components: {

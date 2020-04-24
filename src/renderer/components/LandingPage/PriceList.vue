@@ -5,7 +5,7 @@
       <div class="page-item page-decorator"></div>
       <div class="page-item page-decorator"></div>
     </div>
-    <div :style="cssVars" class="pages-holder pages-container">
+    <div :style="cssVars" class="pages-holder pages-container" v-if="showPrices">
       <PriceItem v-for="item in prices" :key="item.id" :price="item" />
     </div>
   </div>
@@ -18,6 +18,9 @@ export default {
   components: { PriceItem },
   props:["price_data","ads_height"],
   computed: {
+    showPrices(){
+      return !this.price_data.hide;
+    },
     prices () {
       return this.price_data.items
     },
