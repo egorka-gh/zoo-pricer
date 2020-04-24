@@ -2,7 +2,7 @@
 
 import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron'
 import defaults from './settings.json'
-import store from '../renderer/store'
+//import store from '../renderer/store'
 import FtpHelper from './ftp-helper'
 
 const settings = require('electron-settings');
@@ -23,6 +23,21 @@ const winURL = process.env.NODE_ENV === 'development' ?
     `file://${__dirname}/index.html`
 
 function createWindow() {
+    //check if config is valid
+    if (!settings.has('app.id')) {
+        //first run
+        log.info('Create default settings')
+        settings.setAll(defaults)
+        settings.set('app.folder', app.getPath('userData'))
+    }
+    /*
+    //monitor app.id
+    settings.watch('app.id', () => {
+        settings.set('sync.ads', '');
+        settings.set('sync.price', '');
+        applySync();
+    });
+    */
     /**
      * Initial window options
      */
@@ -42,7 +57,6 @@ function createWindow() {
     mainWindow.on('closed', () => {
         mainWindow = null
     })
-
 }
 
 
@@ -83,6 +97,12 @@ app.on('activate', () => {
     }
 })
 
+ipcMain.once('startSync', (event) => {
+    runSync();
+    event.sender.send('startSync-reply', 'started');
+})
+
+/*
 ipcMain.on('initApp', (event) => {
     initApp();
     event.sender.send('initApp-reply', settings.get('app.id'));
@@ -100,12 +120,6 @@ function initApp() {
     runSync();
 }
 
-settings.watch('app.id', () => {
-    settings.set('sync.ads', '');
-    settings.set('sync.price', '');
-    applyConfig();
-});
-
 function applyConfig() {
     try {
         store.dispatch('applyConfig', settings.getAll())
@@ -114,6 +128,7 @@ function applyConfig() {
         log.error(error);
     }
 }
+*/
 
 
 function runSync() {
@@ -149,7 +164,7 @@ function runSync() {
                 if (r) {
                     if (r.ads) settings.set('sync.ads', r.ads)
                     if (r.price) settings.set('sync.price', r.price)
-                    store.dispatch('sync', r);
+                    applySync(r);
                 }
             });
     } catch (error) {
@@ -159,6 +174,9 @@ function runSync() {
     setTimeout(() => runSync(), interval);
 }
 
+function applySync(sync) {
+    mainWindow.webContents.send('sync', sync);
+}
 
 /**
  * Auto Updater

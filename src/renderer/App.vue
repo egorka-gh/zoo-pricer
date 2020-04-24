@@ -1,15 +1,16 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view :app_data="app_data"></router-view>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'zoo-pricer'
+    name: 'zoo-pricer',
+    props: ["app_data"]
   }
 </script>
 
 <style>
-  /* CSS */
+/* CSS */
 </style>

@@ -1,0 +1,17 @@
+{
+    "ads": {
+        "folder": "",
+        "version": "",
+        "hide": true,
+        "height": 100,
+        "interval": 5000,
+        "showItems": 2,
+        "items": []
+    },
+    "price": {
+        "folder": "",
+        "version": "",
+        "hide": true,
+        "items": []
+    }
+}

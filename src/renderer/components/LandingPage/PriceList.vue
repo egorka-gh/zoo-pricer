@@ -16,13 +16,14 @@ import PriceItem from './PriceItem'
 
 export default {
   components: { PriceItem },
+  props:["price_data","ads_height"],
   computed: {
     prices () {
-      return this.$store.state.PriceList.items
+      return this.price_data.items
     },
     cssVars() {
       return {
-        '--height': this.$store.state.Ad.height + 'px'
+        '--height': this.ads_height + 'px'
       };
     }
   }

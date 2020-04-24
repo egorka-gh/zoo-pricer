@@ -2,8 +2,8 @@
   <div id="wrapper">
     <main>
       <button class="focus-holder"></button>
-      <PriceList></PriceList>
-      <Ads></Ads>
+      <PriceList :price_data="price_data" :ads_height="ads_data.height"></PriceList>
+      <Ads :ads_data="ads_data"></Ads>
     </main>
   </div>
 </template>
@@ -16,35 +16,39 @@
   export default {
     name: 'landing-page',
     components: { Ads, PriceList },
+    props: ["app_data"],
+    computed:{
+      ads_data(){
+        return this.app_data.ads;
+      },
+      price_data(){
+        return this.app_data.price;
+      },
+    }
   }
 </script>
 
 <style >
-  @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
 
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  body { font-family: 'Source Sans Pro', sans-serif; }
+body {
+  font-family: "Source Sans Pro", sans-serif;
+}
 
-  #wrapper {
-    background:
-      radial-gradient(
-        ellipse at top left,
-        #f3f3f3 60%,
-        #e0e0e0 100%
-      );
-    height: 100vh;
-    width: 100vw;
-  }
+#wrapper {
+  background: radial-gradient(ellipse at top left, #f3f3f3 60%, #e0e0e0 100%);
+  height: 100vh;
+  width: 100vw;
+}
 
-  .focus-holder{
-    position: absolute;
-    color: transparent;
-  }
-
-
+.focus-holder {
+  position: absolute;
+  color: transparent;
+}
 </style>

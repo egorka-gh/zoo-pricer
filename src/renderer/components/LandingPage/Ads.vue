@@ -21,32 +21,24 @@ import carousel from 'vue-owl-carousel'
 
 export default {
   components: { carousel },
+  props: ['ads_data'],
   computed: {
     showAds(){
-      return !this.$store.state.Ad.hide;
+      return !this.ads_data.hide;
     },
     ads () {
-      return this.$store.state.Ad.items;
+      return this.ads_data.items;
     },
     cssVars() {
       return {
-        '--height': this.$store.state.Ad.height + 'px'
+        '--height': this.ads_data.height + 'px'
       };
     },
     autoplayInterval(){
-      return this.$store.state.Ad.interval;
+      return this.ads_data.interval;
     },
     showItems(){
-      return this.$store.state.Ad.showItems;
-    }
-  },
-  methods: {
-    handleClick: function() {
-      this.$router.replace('config');
-      this.$store.dispatch('checkout', null, {root: true});
-    },
-    handleSync: function() {
-      this.$store.dispatch('sync', '01');
+      return this.ads_data.showItems;
     }
   }
 }
