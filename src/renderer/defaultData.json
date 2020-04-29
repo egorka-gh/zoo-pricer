@@ -13,5 +13,13 @@
         "version": "",
         "hide": true,
         "items": []
+    },
+    "font": {
+        "group1": 24,
+        "group2": 18,
+        "brand1": 20,
+        "brand2": 14,
+        "body": 14,
+        "gap": 18
     }
 }

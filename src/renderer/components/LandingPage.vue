@@ -1,8 +1,8 @@
 <template>
-  <div id="wrapper">
+  <div id="wrapper" :style="cssVars">
     <main>
       <button class="focus-holder"></button>
-      <PriceList :price_data="price_data" :ads_height="ads_data.height"></PriceList>
+      <PriceList :price_data="price_data"></PriceList>
       <Ads :ads_data="ads_data"></Ads>
     </main>
   </div>
@@ -24,6 +24,17 @@
       price_data(){
         return this.app_data.price;
       },
+      cssVars() {
+        return {
+          '--font_group1': this.app_data.font.group1 + 'px',
+          '--font_group2': this.app_data.font.group2 + 'px',
+          '--font_brand1': this.app_data.font.brand1 + 'px',
+          '--font_brand2': this.app_data.font.brand2 + 'px',
+          '--font_body': this.app_data.font.body + 'px',
+          '--group_gap': this.app_data.font.gap + 'px',
+          '--height': this.ads_data.height + 'px',
+        }
+      }
     }
   }
 </script>

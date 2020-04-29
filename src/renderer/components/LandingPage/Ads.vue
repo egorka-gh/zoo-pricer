@@ -1,5 +1,5 @@
 <template>
-  <div :style="cssVars" class="owl-wrapper">
+  <div class="owl-wrapper">
     <carousel
       v-if="showAds"
       :autoplay="true"
@@ -28,11 +28,6 @@ export default {
     },
     ads () {
       return this.ads_data.items;
-    },
-    cssVars() {
-      return {
-        '--height': this.ads_data.height + 'px'
-      };
     },
     autoplayInterval(){
       return this.ads_data.interval;

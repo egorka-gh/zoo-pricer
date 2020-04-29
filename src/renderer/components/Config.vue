@@ -147,6 +147,59 @@ export default {
             ]
           },
           {
+            legend: "Размеры шрифтов",
+            fields: [
+              {
+                type: 'input',
+                inputType: 'number',
+                label: 'Основной',
+                model: 'font.body',
+                min: 3,
+                validator: "integer"
+              },
+              {
+                type: 'input',
+                inputType: 'number',
+                label: 'Группа',
+                model: 'font.group1',
+                min: 3,
+                validator: "integer"
+              },
+              {
+                type: 'input',
+                inputType: 'number',
+                label: 'Группа описание',
+                model: 'font.group2',
+                min: 3,
+                validator: "integer"
+              },
+              {
+                type: 'input',
+                inputType: 'number',
+                label: 'Бренд',
+                model: 'font.brand1',
+                min: 3,
+                validator: "integer"
+              },
+              {
+                type: 'input',
+                inputType: 'number',
+                label: 'Бренд страна',
+                model: 'font.brand2',
+                min: 3,
+                validator: "integer"
+              },
+              {
+                type: 'input',
+                inputType: 'number',
+                label: 'Разделитель групп',
+                model: 'font.gap',
+                min: 3,
+                validator: "integer"
+              }
+            ]
+          },
+          {
             fields: [
               {
                 type: "submit",

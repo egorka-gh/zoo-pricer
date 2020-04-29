@@ -1,8 +1,8 @@
 <template>
   <div class="price-item price-item-head">
     <div class="price-item-name">
-      <h1>{{ price.group }}</h1>
-      <h2>{{ price.group_comment }}</h2>
+      <div class="group1">{{ price.group }}</div>
+      <div class="group2">{{ price.group_comment }}</div>
     </div>
     <div class="price-item-price">
       <img src="~@/assets/cat.png" />

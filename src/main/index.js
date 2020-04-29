@@ -1,43 +1,50 @@
-'use strict'
+"use strict";
 
-import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron'
-import defaults from './settings.json'
+import { app, BrowserWindow, ipcMain, globalShortcut } from "electron";
+import defaults from "./settings.json";
 //import store from '../renderer/store'
-import FtpHelper from './ftp-helper'
+import FtpHelper from "./ftp-helper";
 
-const settings = require('electron-settings');
-const log = require('electron-log');
+const settings = require("electron-settings");
+const log = require("electron-log");
 const path = require("path");
 
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
-if (process.env.NODE_ENV !== 'development') {
-    global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+if (process.env.NODE_ENV !== "development") {
+    global.__static = require("path")
+        .join(__dirname, "/static")
+        .replace(/\\/g, "\\\\");
 }
 
-let mainWindow
-const winURL = process.env.NODE_ENV === 'development' ?
+let mainWindow;
+const winURL =
+    process.env.NODE_ENV === "development" ?
     `http://localhost:9080` :
-    `file://${__dirname}/index.html`
+    `file://${__dirname}/index.html`;
 
 function createWindow() {
     //check if config is valid
-    if (!settings.has('app.id')) {
+    if (!settings.has("app.id")) {
         //first run
-        log.info('Create default settings')
-        settings.setAll(defaults)
-        settings.set('app.folder', app.getPath('userData'))
+        log.info("Create default settings");
+        settings.setAll(defaults);
+        settings.set("app.folder", app.getPath("userData"));
+    }
+    //set new 1st level props
+    for (var key in defaults) {
+        if (!settings.has(key)) settings.set(key, defaults[key]);
     }
     /*
-    //monitor app.id
-    settings.watch('app.id', () => {
-        settings.set('sync.ads', '');
-        settings.set('sync.price', '');
-        applySync();
-    });
-    */
+        //monitor app.id
+        settings.watch('app.id', () => {
+            settings.set('sync.ads', '');
+            settings.set('sync.price', '');
+            applySync();
+        });
+        */
     /**
      * Initial window options
      */
@@ -48,59 +55,58 @@ function createWindow() {
         frame: false,
         fullscreen: true,
         webPreferences: {
-            webSecurity: false
-        }
-    })
+            webSecurity: false,
+        },
+    });
     mainWindow.setMenu(null);
     mainWindow.loadURL(winURL);
 
-    mainWindow.on('closed', () => {
-        mainWindow = null
-    })
+    mainWindow.on("closed", () => {
+        mainWindow = null;
+    });
 }
 
+app.on("ready", createWindow);
 
-app.on('ready', createWindow)
-
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit()
+app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") {
+        app.quit();
     }
-})
+});
 
-app.on('ready', () => {
+app.on("ready", () => {
     // Register a 'CommandOrControl+X' shortcut listener.
-    const ret = globalShortcut.register('CommandOrControl+X', () => {
-        log.info('CommandOrControl+X is pressed. Closing app');
-        app.quit()
-    })
+    const ret = globalShortcut.register("CommandOrControl+X", () => {
+        log.info("CommandOrControl+X is pressed. Closing app");
+        app.quit();
+    });
 
     if (!ret) {
-        log.info('registration failed')
+        log.info("registration failed");
     }
 
     // Check whether a shortcut is registered.
-    log.info(globalShortcut.isRegistered('CommandOrControl+X'))
-})
+    log.info(globalShortcut.isRegistered("CommandOrControl+X"));
+});
 
-app.on('will-quit', () => {
+app.on("will-quit", () => {
     // Unregister a shortcut.
-    globalShortcut.unregister('CommandOrControl+X')
+    globalShortcut.unregister("CommandOrControl+X");
 
     // Unregister all shortcuts.
-    globalShortcut.unregisterAll()
-})
+    globalShortcut.unregisterAll();
+});
 
-app.on('activate', () => {
+app.on("activate", () => {
     if (mainWindow === null) {
-        createWindow()
+        createWindow();
     }
-})
+});
 
-ipcMain.once('startSync', (event) => {
+ipcMain.once("startSync", (event) => {
     runSync();
-    event.sender.send('startSync-reply', 'started');
-})
+    event.sender.send("startSync-reply", "started");
+});
 
 /*
 ipcMain.on('initApp', (event) => {
@@ -130,40 +136,53 @@ function applyConfig() {
 }
 */
 
-
 function runSync() {
     //resync interval
-    let interval = settings.get('ftp.interval')
+    let interval = settings.get("ftp.interval");
     if (!interval || interval < 20) interval = 20;
-    interval = process.env.NODE_ENV === 'development' ?
+    interval =
+        process.env.NODE_ENV === "development" ?
         interval * 1000 :
         interval * 60 * 1000;
     //check settings
-    if (!settings.get('app.folder') || !settings.get('app.id') || !settings.get('ftp.host')) {
+    if (!settings.get("app.folder") ||
+        !settings.get("app.id") ||
+        !settings.get("ftp.host")
+    ) {
         //shedule
         setTimeout(() => runSync(), interval);
         return;
     }
     //check app.folder
-    var fs = require('fs');
-    if (!fs.existsSync(settings.get('app.folder'))) {
+    var fs = require("fs");
+    if (!fs.existsSync(settings.get("app.folder"))) {
         //shedule
         setTimeout(() => runSync(), interval);
         return;
     }
-    const localFolder = path.join(settings.get('app.folder'), settings.get('app.id'));
-    const versions = { price: settings.get('sync.price'), ads: settings.get('sync.ads') };
-    const ftpFolder = settings.get('ftp.folder') + '/' + settings.get('app.id');
+    const localFolder = path.join(
+        settings.get("app.folder"),
+        settings.get("app.id")
+    );
+    const versions = {
+        price: settings.get("sync.price"),
+        ads: settings.get("sync.ads"),
+    };
+    const ftpFolder = settings.get("ftp.folder") + "/" + settings.get("app.id");
     try {
         if (!fs.existsSync(localFolder)) fs.mkdirSync(localFolder);
 
-        new FtpHelper(settings.get('ftp.host'), settings.get('ftp.user'), settings.get('ftp.pass'))
+        new FtpHelper(
+                settings.get("ftp.host"),
+                settings.get("ftp.user"),
+                settings.get("ftp.pass")
+            )
             .sync(versions, localFolder, ftpFolder)
-            .then(r => {
-                log.info('sync result:', r);
+            .then((r) => {
+                log.info("sync result:", r);
                 if (r) {
-                    if (r.ads) settings.set('sync.ads', r.ads)
-                    if (r.price) settings.set('sync.price', r.price)
+                    if (r.ads) settings.set("sync.ads", r.ads);
+                    if (r.price) settings.set("sync.price", r.price);
                     applySync(r);
                 }
             });
@@ -175,7 +194,7 @@ function runSync() {
 }
 
 function applySync(sync) {
-    mainWindow.webContents.send('sync', sync);
+    mainWindow.webContents.send("sync", sync);
 }
 
 /**
