@@ -83,6 +83,15 @@ export default {
               },
               {
                 type: 'input',
+                inputType: 'number',
+                label: 'Порт',
+                model: 'ftp.port',
+                min: 1,
+                required: true,
+                validator: "integer"
+              },
+              {
+                type: 'input',
                 inputType: 'text',
                 label: 'Пользователь',
                 model: 'ftp.user',

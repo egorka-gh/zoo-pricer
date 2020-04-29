@@ -17,12 +17,12 @@ async function example() {
     }
 }
 */
-const log = require('electron-log');
+const log = require("electron-log");
 
 export default class FtpHelper {
-
-    constructor(host, user, pass) {
+    constructor(host, port, user, pass) {
         this.host = host;
+        this.port = port;
         this.user = user;
         this.pass = pass;
     }
@@ -34,23 +34,25 @@ export default class FtpHelper {
         const d = new Date();
         const maxversion = d.toJSON().substr(0, 10);
         const result = new Object();
-        const fs = require('fs');
+        const fs = require("fs");
 
         try {
             //connect
             await client.access({
                 host: this.host,
+                port: this.port,
                 user: this.user,
-                password: this.pass
+                password: this.pass,
             });
             for (var key in currentVersions) {
-                if (!fs.existsSync(path.join(localFolder, key))) fs.mkdirSync(path.join(localFolder, key));
+                if (!fs.existsSync(path.join(localFolder, key)))
+                    fs.mkdirSync(path.join(localFolder, key));
 
                 let newVersion = "";
                 //get forlders
-                let lst = await client.list(ftpFolder + '/' + key);
+                let lst = await client.list(ftpFolder + "/" + key);
                 //get max valid version
-                lst.forEach(fi => {
+                lst.forEach((fi) => {
                     if (fi.isDirectory && fi.name <= maxversion && fi.name > newVersion) {
                         newVersion = fi.name;
                     }
@@ -62,7 +64,10 @@ export default class FtpHelper {
                         fs.mkdirSync(targetDir, { recursive: true });
                     }
                     //downloaad folder
-                    await client.downloadToDir(targetDir, ftpFolder + '/' + key + "/" + newVersion);
+                    await client.downloadToDir(
+                        targetDir,
+                        ftpFolder + "/" + key + "/" + newVersion
+                    );
                 } else {
                     newVersion = "";
                 }
@@ -74,5 +79,4 @@ export default class FtpHelper {
         client.close();
         return result;
     }
-
 }

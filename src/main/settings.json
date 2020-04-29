@@ -10,6 +10,7 @@
   },
   "ftp": {
     "host": "",
+    "port": 21,
     "user": "",
     "pass": "",
     "folder": "/",

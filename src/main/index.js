@@ -37,14 +37,6 @@ function createWindow() {
     for (var key in defaults) {
         if (!settings.has(key)) settings.set(key, defaults[key]);
     }
-    /*
-        //monitor app.id
-        settings.watch('app.id', () => {
-            settings.set('sync.ads', '');
-            settings.set('sync.price', '');
-            applySync();
-        });
-        */
     /**
      * Initial window options
      */
@@ -108,34 +100,6 @@ ipcMain.once("startSync", (event) => {
     event.sender.send("startSync-reply", "started");
 });
 
-/*
-ipcMain.on('initApp', (event) => {
-    initApp();
-    event.sender.send('initApp-reply', settings.get('app.id'));
-})
-
-function initApp() {
-    //check if config is valid
-    if (!settings.has('app.id')) {
-        //first run
-        log.info('Create default settings')
-        settings.setAll(defaults)
-        settings.set('app.folder', app.getPath('userData'))
-    }
-    applyConfig();
-    runSync();
-}
-
-function applyConfig() {
-    try {
-        store.dispatch('applyConfig', settings.getAll())
-            .then(store.dispatch('sync', settings.get('sync')));
-    } catch (error) {
-        log.error(error);
-    }
-}
-*/
-
 function runSync() {
     //resync interval
     let interval = settings.get("ftp.interval");
@@ -174,6 +138,7 @@ function runSync() {
 
         new FtpHelper(
                 settings.get("ftp.host"),
+                settings.get("ftp.port", 21),
                 settings.get("ftp.user"),
                 settings.get("ftp.pass")
             )
