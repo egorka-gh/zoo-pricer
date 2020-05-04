@@ -64,6 +64,7 @@
         "vue-form-generator": "^2.3.4",
         "vue-owl-carousel": "^2.0.3",
         "vue-router": "^3.0.1",
+        "vue-seamless-scroll": "^1.1.21",
         "vuex": "^3.2.0",
         "vuex-electron": "^1.0.0"
     },

@@ -27,7 +27,7 @@ var vm = new Vue({
         },
     },
     router,
-    template: '<App :app_data="app_data" />',
+    template: '<App :app_data="app_data" :price="price" />',
     mounted: function() {
         // eslint-disable-next-line no-console
         log.info("app mounted", this.$data);
@@ -50,6 +50,7 @@ var vm = new Vue({
             this.applySync(settings.get("sync"));
         },
         applyConfig: function() {
+            //TODO refactor to copyobj
             const config = settings.getAll();
             //ads
             let newFolder = path.join(config.app.folder, config.app.id, "ads");
@@ -81,6 +82,7 @@ var vm = new Vue({
                 config.font.brand2 > 0 ? config.font.brand2 : data.font.brand2;
             this.font.body = config.font.body > 0 ? config.font.body : data.font.body;
             this.font.gap = config.font.gap > 0 ? config.font.gap : data.font.gap;
+            this.font.speed = config.font.speed > 0 ? config.font.speed : data.font.speed;
         },
 
         applySync: function(versions) {
@@ -90,7 +92,7 @@ var vm = new Vue({
         },
 
         syncPrice: function(versions) {
-            //log.info('syncPrice', versions);
+            log.info('syncPrice', versions);
             if (!versions || !versions.price) return;
             this.price.hide = true;
             if (!this.price.folder) return;
@@ -133,13 +135,13 @@ var vm = new Vue({
                 this.price.version = versions.price;
                 this.price.items = records;
                 this.price.hide = false;
+                log.info('syncPrice', this.price);
             } catch (error) {
                 log.error(error);
             }
         },
 
         syncAds: function(versions) {
-            log.info("syncAds ", versions);
             if (!versions || !versions.ads) return;
             this.ads.hide = true;
             if (!this.ads.folder) return;
@@ -160,7 +162,7 @@ var vm = new Vue({
                 });
                 this.ads.items = newItems;
                 this.ads.hide = false;
-                log.info("syncAds ", this.ads);
+                //log.info("syncAds ", this.ads);
             });
         },
     },

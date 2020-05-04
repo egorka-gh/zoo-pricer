@@ -1,22 +1,43 @@
 <template>
   <div>
-    <div class="pages-holder pages-decorator">
-      <div class="page-item page-decorator"></div>
-      <div class="page-item page-decorator"></div>
-      <div class="page-item page-decorator"></div>
-    </div>
-    <div class="pages-holder pages-container" v-if="showPrices">
-      <PriceItem v-for="item in prices" :key="item.id" :price="item" />
+    <div ref="wrap" class="pages-holder pages-decorator">
+      <div class="page-item page-decorator">
+        <PageScroll :data="prices1" :viewportHeight="clientHeight" :speed="speed">
+          <PriceItem v-for="item in prices1" :key="item.id" :price="item" />
+        </PageScroll>
+      </div>
+      <div class="page-item page-decorator">
+        <PageScroll :data="prices2" :viewportHeight="clientHeight" :speed="speed">
+          <PriceItem v-for="item in prices2" :key="item.id" :price="item" />
+        </PageScroll>
+      </div>
+      <div class="page-item page-decorator">
+        <PageScroll :data="prices3" :viewportHeight="clientHeight" :speed="speed">
+          <PriceItem v-for="item in prices3" :key="item.id" :price="item" />
+        </PageScroll>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import PriceItem from './PriceItem'
+  import PriceItem from './PriceItem'
+  const log = require('electron-log');
+  import PageScroll from './PageScroll'
+  //const arrayEqual = require('comutils/arrayEqual')
 
 export default {
-  components: { PriceItem },
-  props:["price_data"],
+  //components: { PriceItem, PageScroll },
+  components: { PriceItem, PageScroll},
+  props:["price_data", "speed"],
+  data: function(){
+    return {
+      prices1: [],
+      prices2: [],
+      prices3: [],
+      clientHeight: 0,
+    }
+  },
   computed: {
     showPrices(){
       return !this.price_data.hide;
@@ -24,6 +45,69 @@ export default {
     prices () {
       return this.price_data.items
     }
+  },
+  watch:{
+    price_data: function(){
+      log.info("PriceList: price_data changed");
+    },
+    prices: function (newPrices) {
+      this.spreadPrices(newPrices)   
+    }
+  },
+  methods: {
+    spreadPrices  (newPrices) {
+   // prices: function (newPrices, oldPrices) {
+     // if (arrayEqual(newPrices, oldPrices)) return
+      //split by group and spread over three columns
+      log.info("PriceList: prices changed");
+      let group ;
+      let groups = []
+      let grp=[]
+      newPrices.forEach((rec) => {
+        if(!group || rec.group_id != group){
+          group = rec.group_id
+          if (grp.length>0) groups.push(grp)
+          grp=[]
+        }
+        grp.push(rec)
+      });
+      if (grp.length>0) groups.push(grp)
+      //log.info("groups", groups)
+      let columns = [[],[],[]]
+      if (groups.length<=3){
+        groups.forEach((g,i) => { columns[i]=g});
+      }else{
+        const third = newPrices.length/3
+        groups.forEach((g) => { 
+          //choothe column
+          let col = 0
+          let len = newPrices.length
+          for ( var i = 0; i<3; i++){
+            //first fill up to third 
+            if((g.length + columns[i].length) <= third){
+              col=i
+              break;
+            }
+            //choose min column
+            if (columns[i].length < len){
+              col=i;
+              len=columns[i].length;
+            }
+          }
+          columns[col] = columns[col].concat(g)
+        });
+      }
+      //set gap at last item
+      columns.forEach((c) => { if(c.length>0) c[c.length-1].show_gap=true });
+      //complite
+      this.prices1=columns[0]
+      this.prices2=columns[1]
+      this.prices3=columns[2]
+    }
+  },
+  mounted(){
+    this.clientHeight = this.$refs.wrap.clientHeight
+    if (this.prices && this.prices.length>0) this.spreadPrices(this.prices)
   }
 }
 </script>
@@ -36,7 +120,6 @@ export default {
   margin: 0;
 }
 .pages-decorator {
-  position: absolute;
   width: 100%;
   display: flex;
   flex-flow: row;
@@ -54,6 +137,7 @@ export default {
 
 .page-decorator {
   height: 100%;
+  overflow: hidden;
   background: #ffffff;
 }
 

@@ -2,7 +2,7 @@
   <div id="wrapper" :style="cssVars">
     <main>
       <button class="focus-holder"></button>
-      <PriceList :price_data="price_data"></PriceList>
+      <PriceList :price_data="price" :speed="speed"></PriceList>
       <Ads :ads_data="ads_data"></Ads>
     </main>
   </div>
@@ -12,17 +12,21 @@
   // import SystemInformation from './LandingPage/SystemInformation'
   import Ads from './LandingPage/Ads'
   import PriceList from './LandingPage/PriceList'
+  //const log = require('electron-log');
 
   export default {
     name: 'landing-page',
     components: { Ads, PriceList },
-    props: ["app_data"],
+    props: ["app_data", "price"],
     computed:{
       ads_data(){
         return this.app_data.ads;
       },
       price_data(){
         return this.app_data.price;
+      },
+      speed(){
+        return this.app_data.font.speed ? this.app_data.font.speed : 50;
       },
       cssVars() {
         return {
@@ -35,7 +39,17 @@
           '--height': this.ads_data.height + 'px',
         }
       }
+    },
+    /*
+    watch:{
+      app_data: function(){
+          log.info("LandingPage: app_data changed");
+      },
+      price: function(){
+          log.info("LandingPage: price changed");
+      }
     }
+    */
   }
 </script>
 

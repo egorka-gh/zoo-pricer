@@ -198,6 +198,10 @@ export default {
                 min: 3,
                 validator: "integer"
               },
+            ]
+          },
+          {
+            fields: [
               {
                 type: 'input',
                 inputType: 'number',
@@ -205,11 +209,15 @@ export default {
                 model: 'font.gap',
                 min: 3,
                 validator: "integer"
-              }
-            ]
-          },
-          {
-            fields: [
+              },
+              {
+                type: 'input',
+                inputType: 'number',
+                label: 'Скорость прокрутки',
+                model: 'font.speed',
+                min: 0,
+                validator: "integer"
+              },
               {
                 type: "submit",
                 id: 'btSub',

@@ -2,9 +2,8 @@
 
 import { app, BrowserWindow, ipcMain, globalShortcut } from "electron";
 import defaults from "./settings.json";
-//import store from '../renderer/store'
 import FtpHelper from "./ftp-helper";
-
+const copyObj = require('comutils/copyObj')
 const settings = require("electron-settings");
 const log = require("electron-log");
 const path = require("path");
@@ -33,10 +32,8 @@ function createWindow() {
         settings.setAll(defaults);
         settings.set("app.folder", app.getPath("userData"));
     }
-    //set new 1st level props
-    for (var key in defaults) {
-        if (!settings.has(key)) settings.set(key, defaults[key]);
-    }
+    //join settings with defaults (add new settings)
+    settings.setAll(copyObj(true, {}, defaults, settings.getAll()));
     /**
      * Initial window options
      */

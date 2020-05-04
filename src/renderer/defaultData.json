@@ -20,6 +20,7 @@
         "brand1": 20,
         "brand2": 14,
         "body": 14,
-        "gap": 18
+        "gap": 18,
+        "speed": 50
     }
 }
