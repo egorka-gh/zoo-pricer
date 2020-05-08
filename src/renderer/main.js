@@ -83,6 +83,7 @@ var vm = new Vue({
             this.font.body = config.font.body > 0 ? config.font.body : data.font.body;
             this.font.gap = config.font.gap > 0 ? config.font.gap : data.font.gap;
             this.font.speed = config.font.speed > 0 ? config.font.speed : data.font.speed;
+            this.font.columns = config.font.columns > 0 ? config.font.columns : data.font.columns;
         },
 
         applySync: function(versions) {

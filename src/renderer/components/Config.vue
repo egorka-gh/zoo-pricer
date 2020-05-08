@@ -219,6 +219,15 @@ export default {
                 validator: "integer"
               },
               {
+                type: 'input',
+                inputType: 'number',
+                label: 'Количество колонок',
+                model: 'font.columns',
+                min: 2,
+                max: 5,
+                validator: "integer"
+              },
+              {
                 type: "submit",
                 id: 'btSub',
                 label: "",

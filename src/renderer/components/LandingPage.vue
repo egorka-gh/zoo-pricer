@@ -2,7 +2,7 @@
   <div id="wrapper" :style="cssVars">
     <main>
       <button class="focus-holder"></button>
-      <PriceList :price_data="price" :speed="speed"></PriceList>
+      <PriceList :price_data="price_data" :columns="columns"></PriceList>
       <Ads :ads_data="ads_data"></Ads>
     </main>
   </div>
@@ -11,7 +11,8 @@
 <script>
   // import SystemInformation from './LandingPage/SystemInformation'
   import Ads from './LandingPage/Ads'
-  import PriceList from './LandingPage/PriceList'
+  //import PriceList from './LandingPage/PriceList'
+  import PriceList from './LandingPage/PriceListStatic'
   //const log = require('electron-log');
 
   export default {
@@ -28,6 +29,9 @@
       speed(){
         return this.app_data.font.speed ? this.app_data.font.speed : 50;
       },
+      columns(){
+        return this.app_data.font.columns;
+      },
       cssVars() {
         return {
           '--font_group1': this.app_data.font.group1 + 'px',
@@ -37,6 +41,7 @@
           '--font_body': this.app_data.font.body + 'px',
           '--group_gap': this.app_data.font.gap + 'px',
           '--height': this.ads_data.height + 'px',
+          '--columns': this.app_data.font.columns,
         }
       }
     },

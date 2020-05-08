@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="pages-holder pages-decorator">
-      <div class="page-item page-decorator"></div>
-      <div class="page-item page-decorator"></div>
-      <div class="page-item page-decorator"></div>
+      <div v-for="n in columns" :key="n" class="page-item page-decorator"></div>
     </div>
     <div class="pages-holder pages-container" v-if="showPrices">
       <PriceItem v-for="item in prices" :key="item.id" :price="item" />
@@ -16,7 +14,7 @@ import PriceItem from './PriceItem'
 
 export default {
   components: { PriceItem },
-  props:["price_data"],
+  props:["price_data","columns"],
   computed: {
     showPrices(){
       return !this.price_data.hide;
@@ -58,7 +56,7 @@ export default {
 }
 
 .page-item {
-  width: calc(((100vw - 10px) / 3) - 10px);
+  width: calc(((100vw - 10px) / var(--columns)) - 10px);
   margin: 0 10px 0 0;
 }
 

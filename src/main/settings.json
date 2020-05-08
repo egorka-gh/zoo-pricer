@@ -27,6 +27,7 @@
     "brand2": 14,
     "body": 14,
     "gap": 18,
-    "speed": 50
+    "speed": 50,
+    "columns": 3
   }
 }
