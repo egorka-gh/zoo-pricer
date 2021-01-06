@@ -53,7 +53,7 @@
         }
     },
     "dependencies": {
-        "axios": "^0.18.0",
+        "axios": "^0.21.1",
         "basic-ftp": "^4.5.4",
         "csv-parse": "^4.8.9",
         "electron-log": "^4.1.1",
